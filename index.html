@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>浏览器 SSH 客户端</title>
+  <title>BrowserSSH — 浏览器 SSH 客户端</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/terminal-theme.css">
@@ -11,11 +11,23 @@
 <body>
   <div id="app">
     <header>
-      <h1>🖥️ 浏览器 SSH 客户端</h1>
+      <h1>🖥️ BrowserSSH</h1>
+      <span class="header-subtitle">浏览器 SSH 客户端</span>
+      <div class="header-spacer"></div>
+      <div class="header-actions">
+        <button id="demo-btn" class="demo-btn" title="无需 SSH 服务器，直接体验终端">🚀 演示模式</button>
+      </div>
     </header>
     <main>
       <!-- 左侧连接面板 -->
       <section id="connection-panel">
+        <!-- 最近连接 -->
+        <div class="form-group">
+          <label for="connection-history">最近连接</label>
+          <select id="connection-history">
+            <option value="" disabled selected>📋 最近连接...</option>
+          </select>
+        </div>
         <form id="connection-form">
           <div class="form-group">
             <label for="host">主机地址 (Host)</label>
@@ -47,28 +59,37 @@
           <div class="form-group">
             <label for="ws-url">代理地址 (WebSocket URL) [可选]</label>
             <input type="text" id="ws-url" placeholder="ws://localhost:3000/ws" value="">
-            <span style="font-size:11px;color:var(--text-secondary);">留空则自动使用当前地址</span>
+            <span style="font-size:11px;color:var(--text-secondary);">留空则自动进入演示模式</span>
           </div>
           <div class="button-group">
             <button type="submit" id="connect-btn">🔗 连接</button>
             <button type="button" id="disconnect-btn" disabled>⏹️ 断开</button>
           </div>
         </form>
-        <div id="connection-status" class="status-disconnected">⏹️ 未连接</div>
+        <div id="status-bar" class="status-bar">
+          <span id="connection-status" class="status-disconnected">⏹️ 未连接</span>
+          <span id="session-info" class="session-info"></span>
+        </div>
       </section>
       <!-- 右侧终端区域 -->
       <section id="terminal-container" style="display:none">
+        <div class="terminal-toolbar">
+          <span id="terminal-title">📟 终端</span>
+          <span id="terminal-status-indicator" class="status-dot disconnected"></span>
+        </div>
         <div id="terminal"></div>
       </section>
     </main>
   </div>
-  <!-- 外部库从 CDN 加载 -->
+  <!-- 外部库 (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
-  <!-- 应用脚本 -->
+  <!-- 应用脚本 (按依赖顺序) -->
   <script src="js/websocket-client.js"></script>
   <script src="js/terminal-ui.js"></script>
   <script src="js/connection-form.js"></script>
+  <script src="js/simulated-shell.js"></script>
+  <script src="js/ssh-client.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
