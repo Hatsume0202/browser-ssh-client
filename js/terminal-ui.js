@@ -41,7 +41,7 @@ class TerminalUI {
       },
     });
 
-    this._fitAddon = new FitAddon.FitAddon();
+    this._fitAddon = new FitAddon();
     this._terminal.loadAddon(this._fitAddon);
     this._terminal.open(container);
     this._fitAddon.fit();
@@ -105,4 +105,3 @@ class TerminalUI {
   }
 }
 
-export default TerminalUI;
