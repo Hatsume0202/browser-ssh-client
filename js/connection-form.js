@@ -1,11 +1,12 @@
 /**
- * Manages the SSH connection configuration form.
+ * ConnectionForm - 管理 SSH 连接配置表单
+ * 提供表单值的读取、状态切换、认证方式切换等功能
  */
 class ConnectionForm {
   constructor(formId) {
     this.form = document.getElementById(formId);
     if (!this.form) {
-      throw new Error(`Form element with id "${formId}" not found`);
+      throw new Error('未找到表单元素: #' + formId);
     }
 
     this.host = document.getElementById('host');
@@ -16,6 +17,7 @@ class ConnectionForm {
     this.privateKey = document.getElementById('private-key');
     this.passwordGroup = document.getElementById('password-group');
     this.keyGroup = document.getElementById('key-group');
+    this.wsUrl = document.getElementById('ws-url');
     this.connectBtn = document.getElementById('connect-btn');
     this.disconnectBtn = document.getElementById('disconnect-btn');
     this.connectionStatus = document.getElementById('connection-status');
@@ -29,33 +31,34 @@ class ConnectionForm {
     this._updateAuthFields();
   }
 
-  /** @private */
+  /** @private 设置表单事件监听 */
   _setupEventListeners() {
-    this.form.addEventListener('submit', (event) => {
+    // 表单提交 → 连接
+    this.form.addEventListener('submit', function(event) {
       event.preventDefault();
       if (this._connectHandler) {
         this._connectHandler(this.getValues());
       }
-    });
+    }.bind(this));
 
-    this.disconnectBtn.addEventListener('click', () => {
+    // 断开按钮
+    this.disconnectBtn.addEventListener('click', function() {
       if (this._disconnectHandler) {
         this._disconnectHandler();
       }
-    });
+    }.bind(this));
 
-    this.authType.addEventListener('change', () => {
+    // 认证方式切换
+    this.authType.addEventListener('change', function() {
       this._updateAuthFields();
-    });
+    }.bind(this));
   }
 
-  /** @private */
+  /** @private 根据认证方式切换显示密码/私钥字段 */
   _updateAuthFields() {
-    const isPassword = this.authType.value === 'password';
-
+    var isPassword = this.authType.value === 'password';
     this.passwordGroup.style.display = isPassword ? '' : 'none';
     this.keyGroup.style.display = isPassword ? 'none' : '';
-
     this.password.required = isPassword;
     this.password.disabled = !isPassword;
     this.privateKey.required = !isPassword;
@@ -63,15 +66,15 @@ class ConnectionForm {
   }
 
   /**
-   * Registers a handler for form submit.
-   * @param {Function} callback - Receives config object {host, port, username, password|privateKey}
+   * 注册连接回调
+   * @param {Function} callback - 接收配置对象 {host, port, username, password|privateKey, wsUrl}
    */
   onConnect(callback) {
     this._connectHandler = callback;
   }
 
   /**
-   * Registers a handler for disconnect button click.
+   * 注册断开回调
    * @param {Function} callback
    */
   onDisconnect(callback) {
@@ -79,33 +82,33 @@ class ConnectionForm {
   }
 
   /**
-   * Updates the connection status display.
-   * @param {string} text - Status message text
-   * @param {'disconnected'|'connecting'|'connected'|'error'} state - CSS class suffix
+   * 更新连接状态显示
+   * @param {string} text - 状态文本
+   * @param {'disconnected'|'connecting'|'connected'|'error'} state - CSS 类名后缀
    */
   setStatus(text, state) {
     this.connectionStatus.textContent = text;
-    this.connectionStatus.className = `status-${state}`;
+    this.connectionStatus.className = 'status-' + state;
   }
 
   /**
-   * Toggles UI between connected and disconnected states.
-   * @param {boolean} connected
+   * 切换连接/断开状态下的 UI
+   * @param {boolean} connected - 是否已连接
    */
   setConnected(connected) {
     this.connectBtn.disabled = connected;
     this.disconnectBtn.disabled = !connected;
 
-    // Disable form inputs while connected
-    const inputs = this.form.querySelectorAll('input, select, textarea');
-    for (const input of inputs) {
+    // 连接时禁用所有输入框
+    var inputs = this.form.querySelectorAll('input, select, textarea');
+    for (var i = 0; i < inputs.length; i++) {
+      var input = inputs[i];
       if (input !== this.connectBtn && input !== this.disconnectBtn) {
         input.disabled = connected;
       }
     }
 
-    this.terminalContainer.style.display = connected ? '' : 'none';
-
+    // 连接时折叠面板
     if (connected) {
       this.connectionPanel.classList.add('connected');
     } else {
@@ -114,20 +117,26 @@ class ConnectionForm {
   }
 
   /**
-   * Returns current form values as a config object.
-   * @returns {{host: string, port: number, username: string, password?: string, privateKey?: string}}
+   * 获取当前表单值
+   * @returns {{host: string, port: number, username: string, password?: string, privateKey?: string, wsUrl?: string}}
    */
   getValues() {
-    const values = {
+    var values = {
       host: this.host.value.trim(),
       port: parseInt(this.port.value, 10),
-      username: this.username.value.trim(),
+      username: this.username.value.trim()
     };
 
     if (this.authType.value === 'password') {
       values.password = this.password.value;
     } else {
       values.privateKey = this.privateKey.value;
+    }
+
+    // 自定义 WebSocket URL（可选）
+    var wsUrlVal = this.wsUrl.value.trim();
+    if (wsUrlVal) {
+      values.wsUrl = wsUrlVal;
     }
 
     return values;

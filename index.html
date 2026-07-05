@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Browser SSH Client</title>
+  <title>浏览器 SSH 客户端</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/terminal-theme.css">
@@ -11,52 +11,61 @@
 <body>
   <div id="app">
     <header>
-      <h1>SSH Client</h1>
+      <h1>🖥️ 浏览器 SSH 客户端</h1>
     </header>
     <main>
+      <!-- 左侧连接面板 -->
       <section id="connection-panel">
         <form id="connection-form">
           <div class="form-group">
-            <label for="host">Host</label>
-            <input type="text" id="host" placeholder="example.com" required>
+            <label for="host">主机地址 (Host)</label>
+            <input type="text" id="host" placeholder="example.com 或 192.168.1.100" required>
           </div>
           <div class="form-group">
-            <label for="port">Port</label>
+            <label for="port">端口 (Port)</label>
             <input type="number" id="port" value="22" min="1" max="65535" required>
           </div>
           <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username">用户名 (Username)</label>
             <input type="text" id="username" placeholder="root" required>
           </div>
           <div class="form-group">
-            <label for="auth-type">Authentication</label>
+            <label for="auth-type">认证方式</label>
             <select id="auth-type">
-              <option value="password">Password</option>
-              <option value="key">Private Key</option>
+              <option value="password">密码认证</option>
+              <option value="key">私钥认证</option>
             </select>
           </div>
           <div class="form-group" id="password-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" placeholder="••••••••">
+            <label for="password">密码 (Password)</label>
+            <input type="password" id="password" placeholder="输入 SSH 密码">
           </div>
           <div class="form-group" id="key-group" style="display:none">
-            <label for="private-key">Private Key</label>
+            <label for="private-key">私钥 (Private Key)</label>
             <textarea id="private-key" rows="5" placeholder="-----BEGIN OPENSSH PRIVATE KEY-----\n..."></textarea>
           </div>
+          <div class="form-group">
+            <label for="ws-url">代理地址 (WebSocket URL) [可选]</label>
+            <input type="text" id="ws-url" placeholder="ws://localhost:3000/ws" value="">
+            <span style="font-size:11px;color:var(--text-secondary);">留空则自动使用当前地址</span>
+          </div>
           <div class="button-group">
-            <button type="submit" id="connect-btn">Connect</button>
-            <button type="button" id="disconnect-btn" disabled>Disconnect</button>
+            <button type="submit" id="connect-btn">🔗 连接</button>
+            <button type="button" id="disconnect-btn" disabled>⏹️ 断开</button>
           </div>
         </form>
-        <div id="connection-status" class="status-disconnected">Not connected</div>
+        <div id="connection-status" class="status-disconnected">⏹️ 未连接</div>
       </section>
+      <!-- 右侧终端区域 -->
       <section id="terminal-container" style="display:none">
         <div id="terminal"></div>
       </section>
     </main>
   </div>
+  <!-- 外部库从 CDN 加载 -->
   <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
+  <!-- 应用脚本 -->
   <script src="js/websocket-client.js"></script>
   <script src="js/terminal-ui.js"></script>
   <script src="js/connection-form.js"></script>

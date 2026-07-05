@@ -1,0 +1,3 @@
+# Python WebSocket ↔ SSH 代理依赖
+websockets>=12.0
+asyncssh>=2.14.0
