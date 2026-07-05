@@ -1,0 +1,61 @@
+/* ============================================================
+   Browser SSH Client — xterm.js Theme Overrides
+   ============================================================ */
+
+/* ---------- Terminal Container Sizing ---------- */
+
+#terminal .xterm {
+  height: 100%;
+  padding: 4px;
+}
+
+#terminal .xterm-viewport {
+  height: 100% !important;
+}
+
+/* ---------- Custom Scrollbar (thin, dark) ---------- */
+
+#terminal .xterm-viewport::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+#terminal .xterm-viewport::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#terminal .xterm-viewport::-webkit-scrollbar-thumb {
+  background: #424242;
+  border-radius: 3px;
+  min-height: 24px;
+}
+
+#terminal .xterm-viewport::-webkit-scrollbar-thumb:hover {
+  background: #555555;
+}
+
+#terminal .xterm-viewport::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox scrollbar */
+#terminal .xterm-viewport {
+  scrollbar-width: thin;
+  scrollbar-color: #424242 transparent;
+}
+
+/* ---------- Cursor Transitions ---------- */
+
+#terminal .xterm-cursor {
+  transition: none !important;
+}
+
+#terminal .xterm-cursor-layer {
+  transition: none !important;
+}
+
+/* ---------- Disable Font Ligatures ---------- */
+
+.xterm-rows {
+  font-variant-ligatures: none !important;
+}

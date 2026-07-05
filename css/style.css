@@ -1,0 +1,336 @@
+/* ============================================================
+   Browser SSH Client — Main Application Stylesheet
+   ============================================================ */
+
+/* ---------- Custom Properties ---------- */
+
+:root {
+  --bg-primary: #1e1e1e;
+  --bg-secondary: #252526;
+  --bg-tertiary: #2d2d2d;
+  --text-primary: #d4d4d4;
+  --text-secondary: #969696;
+  --border-color: #3c3c3c;
+  --accent-color: #0078d4;
+  --accent-hover: #1a8ae8;
+  --danger-color: #f14c4c;
+  --success-color: #23d18b;
+  --error-bg: #5a1d1d;
+  --font-mono: 'Consolas', 'Courier New', 'DejaVu Sans Mono', monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --radius: 4px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+}
+
+/* ---------- Reset ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+/* ---------- Layout ---------- */
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* ---------- Header ---------- */
+
+header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 var(--spacing-lg);
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  user-select: none;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.3px;
+}
+
+/* ---------- Main (flex row) ---------- */
+
+main {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ---------- Connection Panel ---------- */
+
+#connection-panel {
+  flex-shrink: 0;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-color);
+  overflow-y: auto;
+  transition: width 0.25s ease, padding 0.25s ease;
+  padding: var(--spacing-lg);
+}
+
+/* ---------- Connection Form ---------- */
+
+#connection-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.form-group label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 1px var(--accent-color);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+.form-group textarea {
+  resize: vertical;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  min-height: 72px;
+}
+
+.form-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23969696'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
+}
+
+/* ---------- Button Group ---------- */
+
+.button-group {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+#connect-btn,
+#disconnect-btn {
+  flex: 1;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+#connect-btn {
+  background: var(--accent-color);
+  color: #ffffff;
+}
+
+#connect-btn:hover {
+  background: var(--accent-hover);
+}
+
+#connect-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+#disconnect-btn {
+  background: var(--danger-color);
+  color: #ffffff;
+}
+
+#disconnect-btn:hover {
+  background: #e03a3a;
+}
+
+#disconnect-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ---------- Connection Status ---------- */
+
+#connection-status {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: var(--radius);
+  text-align: center;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.status-disconnected {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.status-connecting {
+  background: var(--bg-tertiary);
+  color: var(--accent-color);
+}
+
+.status-connected {
+  background: #0d3b1e;
+  color: var(--success-color);
+}
+
+.status-error {
+  background: var(--error-bg);
+  color: var(--danger-color);
+}
+
+/* ---------- Connected State (panel collapsed) ---------- */
+
+#connection-panel.connected {
+  width: 48px;
+  padding: var(--spacing-sm);
+  overflow: hidden;
+}
+
+#connection-panel.connected #connection-form {
+  display: none;
+}
+
+#connection-panel.connected #connection-status {
+  display: none;
+}
+
+#connection-panel.connected .button-group {
+  margin: 0;
+}
+
+#connection-panel.connected #connect-btn {
+  display: none;
+}
+
+#connection-panel.connected #disconnect-btn {
+  display: block;
+  writing-mode: vertical-lr;
+  font-size: 11px;
+  padding: var(--spacing-sm) var(--spacing-xs);
+  min-height: 80px;
+}
+
+/* ---------- Terminal Container ---------- */
+
+#terminal-container {
+  flex: 1;
+  display: none;
+  min-height: 200px;
+  background: var(--bg-primary);
+  position: relative;
+}
+
+#terminal-container.visible {
+  display: block;
+}
+
+#terminal {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- Responsive (<= 768px) ---------- */
+
+@media (max-width: 768px) {
+  main {
+    flex-direction: column;
+  }
+
+  #connection-panel {
+    width: 100%;
+    max-height: 50vh;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  #connection-panel.connected {
+    width: 100%;
+    height: 48px;
+    flex-direction: row;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  #connection-panel.connected .button-group {
+    width: auto;
+  }
+
+  #connection-panel.connected #disconnect-btn {
+    writing-mode: horizontal-tb;
+    min-height: unset;
+    min-width: 80px;
+  }
+
+  #terminal-container {
+    min-height: 200px;
+    flex: 1;
+  }
+}
